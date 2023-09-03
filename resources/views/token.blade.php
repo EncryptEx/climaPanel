@@ -21,7 +21,7 @@
                     </p>
                     
                     @foreach ($tokens as $token)
-                    <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <div class="p-4 mt-7 sm:p-5 bg-white dark:bg-gray-700 shadow sm:rounded-lg">
                         <div class="max-w-xl">
                             @include('partials.delete-token-form')
                         </div>
