@@ -19,41 +19,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
 
-Route::get('/tokens', function (Request $request) {
-    // TODO fix this
-    return view('token', ['tokens'=>auth()->user()->tokens]);
-    
-})->middleware(['auth', 'verified'])->name('tokens');
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
+    Route::get('/tokens',  [TokenController::class, 'get'])->name('tokens');
  
-Route::post('/tokens/create', function (Request $request) {
-    // TODO: accept custom token names
-    $validated = $request->validate([
-        'token_name' => 'required|max:255',
-    ]);
-    $tokens=auth()->user()->tokens;
-    $nwtkn = auth()->user()->createToken($validated['token_name']);
-    $newTokenName = $validated['token_name'];
-    $newTokenCode = $nwtkn->plainTextToken;
-    return view('token', ['tokens'=>$tokens, 'newTokenName'=>$newTokenName, 'newTokenCode'=>$newTokenCode]);
+    Route::post('/tokens/create', [TokenController::class, 'create'])->name('createToken');
 
-})->middleware(['auth', 'verified'])->name('createToken');
+    Route::delete('/tokens', [TokenController::class, 'deleteAll'])->name('delAllTokens');
 
-Route::delete('/tokens', function (Request $request) {
-    auth()->user()->tokens()->delete();
-    return;
-})->middleware(['auth', 'verified'])->name('delAllTokens');
+    Route::delete('/tokens/{id}', [TokenController::class, 'deleteOne'])->name('delToken');
+});
 
-Route::delete('/tokens/{id}', function ($id) {
-    auth()->user()->tokens()->where('id', $id)->delete();
-    return redirect('tokens');
-})->middleware(['auth', 'verified'])->name('delToken');
-
-Route::post('token', [TokenController::class, 'create'])->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
