@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/data', function () {
+    // TODO save data
+    $data = ['message' => 'Hello World!'];
+    return response()->json($data, 200);
+})->middleware('auth:sanctum');
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
