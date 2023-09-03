@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Http\Request;
 use App\Http\Controllers\TokenController;
 /*
 |--------------------------------------------------------------------------
@@ -32,10 +32,16 @@ Route::get('/tokens', function (Request $request) {
  
 Route::post('/tokens/create', function (Request $request) {
     // TODO: accept custom token names
-    $token = auth()->user()->createToken("test");
- 
-    return ['token' => $token->plainTextToken];
-})->middleware(['auth', 'verified']);
+    $validated = $request->validate([
+        'token_name' => 'required|max:255',
+    ]);
+    $tokens=auth()->user()->tokens;
+    $nwtkn = auth()->user()->createToken($validated['token_name']);
+    $newTokenName = $validated['token_name'];
+    $newTokenCode = $nwtkn->plainTextToken;
+    return view('token', ['tokens'=>$tokens, 'newTokenName'=>$newTokenName, 'newTokenCode'=>$newTokenCode]);
+
+})->middleware(['auth', 'verified'])->name('createToken');
 
 Route::delete('/tokens', function (Request $request) {
     auth()->user()->tokens()->delete();

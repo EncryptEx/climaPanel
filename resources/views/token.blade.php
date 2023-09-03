@@ -15,24 +15,37 @@
                         @if (count($tokens) != 0)
                     {{ __("Curent Active Tokens:") }}
                     @else
-                    {{ __("No tokens") }}
+                    {{ __("No active tokens") }}
                     @endif
 
                     </p>
-               
+                    
                     @foreach ($tokens as $token)
                     <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                         <div class="max-w-xl">
-                            @include('partials.token-form')
+                            @include('partials.delete-token-form')
                         </div>
                     </div>
-                    <!-- <div class="p-2 text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-800">
-                        <p class="text-md">
-                            
-                        </p>
-                    </div> -->
-                    <!-- <input type="text" id="tkn{{ $token->name }}" value="{{ $token->plainTextToken }}" class="my-4 w-full rounded bg-white dark:bg-gray-800 dark:border-current" disabled> -->
                     @endforeach
+                    @if (isset ($newTokenName))
+                    <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                        <div class="max-w-xl">
+                                <p class="text-lg"><b>Name:</b> {{ $newTokenName }}</p>
+                                <p class="text"><pre>{{ $newTokenCode }}</pre></p>
+                            </div>
+                        </div>
+                    @endif
+                    
+                </div>
+                
+            </div>
+            <br>
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <p class="text-2xl">
+                        {{ __("Create a new token") }}
+                    </p>
+                    @include('partials.create-token-form')
                 </div>
             </div>
         </div>
