@@ -25,9 +25,9 @@ Route::get('/dashboard', function () {
 
 Route::get('/tokens', function (Request $request) {
     // TODO fix this
-    // return view('token', ['tokens'=>auth()->user()->tokens]);
-    return view('token', ['tokens'=>"TEST"]);
-})->middleware(['auth', 'verified'])->name('token');
+    return view('token', ['tokens'=>auth()->user()->tokens]);
+    
+})->middleware(['auth', 'verified'])->name('tokens');
 
  
 Route::post('/tokens/create', function (Request $request) {
@@ -37,10 +37,15 @@ Route::post('/tokens/create', function (Request $request) {
     return ['token' => $token->plainTextToken];
 })->middleware(['auth', 'verified']);
 
-Route::delete('/tokens/delete', function (Request $request) {
+Route::delete('/tokens', function (Request $request) {
     auth()->user()->tokens()->delete();
     return;
-})->middleware(['auth', 'verified']);
+})->middleware(['auth', 'verified'])->name('delAllTokens');
+
+Route::delete('/tokens/{id}', function ($id) {
+    auth()->user()->tokens()->where('id', $id)->delete();
+    return redirect('tokens');
+})->middleware(['auth', 'verified'])->name('delToken');
 
 Route::post('token', [TokenController::class, 'create'])->middleware(['auth', 'verified']);
 
