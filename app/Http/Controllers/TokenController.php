@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class TokenController extends Controller
 {
-    public function create(Request$request) {
+    public function create(Request $request) {
         $validated = $request->validate([
             'token_name' => 'required|max:255',
         ]);
