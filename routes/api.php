@@ -15,7 +15,3 @@ use App\Http\Controllers\DataController;
 */
 
 Route::post('/data', [DataController::class, 'store'])->middleware('auth:sanctum');
-
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
