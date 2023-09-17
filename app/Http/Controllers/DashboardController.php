@@ -15,9 +15,9 @@ class DashboardController extends Controller
 
         $allTempByDevice = (new DataController)->getValueByUser($request->user()->id, 'temp');
 
-        ;
+        $chart->labels($allTempByDevice['labels']);
         foreach ($allTempByDevice['data'] as $deviceDatasetName => $data) {
-            $chart->dataset($deviceDatasetName, 'line', $data)->options(['color' => '#fff']);
+            $chart->dataset($deviceDatasetName, 'line', $data)->options(['color' => '#fff', 'backgroundColor'=> '#399cd6']);
 
         }
 
