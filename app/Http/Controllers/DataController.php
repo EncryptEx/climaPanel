@@ -32,4 +32,25 @@ class DataController extends Controller
         return response()->json(['success'=>true, 'message'=>'Data saved successfully', 'timestamp'=> time()], 200);
 
     }
+
+    public function getValueByUser(int $userId, string $dataType){
+        $data = Data::where('ownerId', $userId)
+               ->orderBy('created_at', 'desc')
+               ->get();
+        $final=[];
+        foreach ($data as $element) {
+            $val = isset($final[$element['deviceName']])? $final[$element['deviceName']] : [];
+
+            // show necessary data
+            $newElement['type'] = $element['type'];
+            $newElement['value'] = $element['value'];
+            $newElement['created_at'] = $element['created_at'];
+
+            array_push($val, $newElement);
+            
+
+            $final[$element['deviceName']] = $val;
+        }
+        return $final;
+    }
 }
