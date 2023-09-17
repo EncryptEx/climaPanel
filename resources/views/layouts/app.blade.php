@@ -34,11 +34,6 @@
                 {{ $slot }}
             </main>
         </div>
-        @if (isset($scripts))
-        <!-- CHARTS -->
-            {{ $scripts }}
-            {!! $chart->script() !!}
-        <!-- ENDCHARTS -->
-        @endif
+        
     </body>
 </html>

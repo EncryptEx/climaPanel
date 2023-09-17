@@ -15,10 +15,10 @@ class DashboardController extends Controller
 
         $allTempByDevice = (new DataController)->getValueByUser($request->user()->id, 'temp');
 
-        $chart->labels(['One', 'Two', 'Three', 'Four']);
-        foreach ($allTempByDevice as $deviceDatasetName => $data) {
-            // $chart->dataset($deviceDatasetName, 'line', $data);
-            $chart->dataset("test1", 'line', [1, 2, 3, 4]);
+        ;
+        foreach ($allTempByDevice['data'] as $deviceDatasetName => $data) {
+            $chart->dataset($deviceDatasetName, 'line', $data)->options(['color' => '#fff']);
+
         }
 
         return view('dashboard', ['chart' =>$chart, 'scripts'=> "<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js' charset='utf-8'></script>"]);

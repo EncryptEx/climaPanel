@@ -38,19 +38,20 @@ class DataController extends Controller
                ->orderBy('created_at', 'desc')
                ->get();
         $final=[];
+        $labels=[];
         foreach ($data as $element) {
-            $val = isset($final[$element['deviceName']])? $final[$element['deviceName']] : [];
+            $val = isset($final[$element->deviceName])? $final[$element->deviceName] : [];
 
             // show necessary data
-            $newElement['type'] = $element['type'];
-            $newElement['value'] = $element['value'];
-            $newElement['created_at'] = $element['created_at'];
-
+            // $label = $element['type'];
+            $newElement = (int)($element['value']);
+            
+            array_push($labels, $element['created_at']);
             array_push($val, $newElement);
             
 
             $final[$element['deviceName']] = $val;
         }
-        return $final;
+        return ['data'=>$final, 'labels'=>$labels];
     }
 }
