@@ -12,6 +12,7 @@ class DataController extends Controller
         
         $validator = Validator::make($request->all(), [
             'type' => 'required|max:255',
+            'deviceName' => 'required',
             'value' => 'required',
         ]);
 
@@ -23,6 +24,7 @@ class DataController extends Controller
 
         $data->type = $request->type;
         $data->ownerId = $request->user()->id;
+        $data->deviceName = $request->deviceName;
         $data->value = $request->value;
 
         $data->save();
