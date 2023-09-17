@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\DashboardController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,10 +23,10 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('/dashboard',  [DashboardController::class, 'get'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'get'])->name('dashboard');
 
-    Route::get('/tokens',  [TokenController::class, 'get'])->name('tokens');
- 
+    Route::get('/tokens', [TokenController::class, 'get'])->name('tokens');
+
     Route::post('/tokens/create', [TokenController::class, 'create'])->name('createToken');
 
     Route::delete('/tokens', [TokenController::class, 'deleteAll'])->name('delAllTokens');
