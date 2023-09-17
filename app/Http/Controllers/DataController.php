@@ -8,8 +8,9 @@ use App\Models\Data;
 
 class DataController extends Controller
 {
-    public function store(Request $request) {
-        
+    public function store(Request $request)
+    {
+
         $validator = Validator::make($request->all(), [
             'type' => 'required|max:255',
             'deviceName' => 'required',
@@ -17,10 +18,10 @@ class DataController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success'=>false, 'message'=>$validator->errors(), 'timestamp'=> time()], 400);
+            return response()->json(['success' => false, 'message' => $validator->errors(), 'timestamp' => time()], 400);
         }
 
-        $data = new Data;
+        $data = new Data();
 
         $data->type = $request->type;
         $data->ownerId = $request->user()->id;
@@ -29,7 +30,30 @@ class DataController extends Controller
 
         $data->save();
 
-        return response()->json(['success'=>true, 'message'=>'Data saved successfully', 'timestamp'=> time()], 200);
+        return response()->json(['success' => true, 'message' => 'Data saved successfully', 'timestamp' => time()], 200);
 
+    }
+
+    public function getValueByUser(int $userId, string $dataType)
+    {
+        $data = Data::where('ownerId', $userId)
+               ->orderBy('created_at', 'desc')
+               ->get();
+        $final = [];
+        $labels = [];
+        foreach ($data as $element) {
+            $val = isset($final[$element->deviceName]) ? $final[$element->deviceName] : [];
+
+            // show necessary data
+            // $label = $element['type'];
+            $newElement = (int)($element['value']);
+
+            array_push($labels, $element['created_at']);
+            array_push($val, $newElement);
+
+
+            $final[$element['deviceName']] = $val;
+        }
+        return ['data' => $final, 'labels' => $labels];
     }
 }
