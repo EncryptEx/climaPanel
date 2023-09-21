@@ -37,7 +37,7 @@ class DataController extends Controller
     public function getValueByUser(int $userId, string $dataType)
     {
         $data = Data::where('ownerId', $userId)
-               ->orderBy('created_at', 'desc')
+               ->orderBy('created_at', 'asc')
                ->get();
         $final = [];
         $labels = [];
